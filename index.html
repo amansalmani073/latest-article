@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Global Travel Guide | Visa Information & Destination Tips</title>
-<meta name="description" content="Travel visa information, destination guides, travel costs and trip planning tips for Indian travellers exploring international and domestic destinations.">
+<title>Global Travel Guide</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-  
+
 *{
 margin:0;
 padding:0;
@@ -33,7 +32,6 @@ background:white;
 position:sticky;
 top:0;
 box-shadow:0 2px 10px rgba(0,0,0,0.08);
-z-index:1000;
 }
 
 .logo{
@@ -48,7 +46,7 @@ color:#333;
 font-weight:600;
 }
 
-/* HERO SECTION */
+/* HERO */
 
 .hero{
 position:relative;
@@ -84,69 +82,8 @@ z-index:2;
 margin-top:10px;
 font-size:20px;
 }
-  <div class="container">
 
-<h2 style="text-align:center;margin-bottom:20px;">
-Explore Travel Categories
-</h2>
-
-<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
-
-<a href="./visa-guides.html" class="card" style="width:300px;text-align:center;">
-<div class="card-content">
-<h3>Visa Guides</h3>
-<p>Check visa documents, requirements & process.</p>
-</div>
-</a>
-
-<a href="./travel-tips.html" class="card" style="width:300px;text-align:center;">
-<div class="card-content">
-<h3>Travel Tips</h3>
-<p>Budget travel & planning tips.</p>
-</div>
-</a>
-
-<a href="./destination-guides.html" class="card" style="width:300px;text-align:center;">
-<div class="card-content">
-<h3>Destination Guides</h3>
-<p>Explore travel costs & itineraries.</p>
-</div>
-</a>
-
-</div>
-
-</div>
-  <div class="container">
-
-<h2 style="text-align:center;margin-bottom:20px;">
-Latest Articles
-</h2>
-
-<div class="card">
-
-<img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a">
-
-<div class="card-content">
-
-<span class="tag">Thailand Visa Guide</span>
-
-<h2>What Documents Are Required for a Thailand Tourist Visa?</h2>
-
-<p>
-Learn the financial requirements, visa documents and application tips.
-</p>
-
-<a href="./thailand-tourist-visa-documents.html" class="btn">
-Read Full Article
-</a>
-
-</div>
-</div>
-
-</div>
-
-
-/* BLOG SECTION */
+/* CARD */
 
 .container{
 max-width:1100px;
@@ -159,7 +96,6 @@ background:white;
 margin-bottom:30px;
 border-radius:10px;
 overflow:hidden;
-transition:0.3s;
 box-shadow:0 4px 20px rgba(0,0,0,0.05);
 }
 
@@ -173,21 +109,10 @@ object-fit:cover;
 padding:20px;
 }
 
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 5px 20px rgba(0,0,0,0.15);
-}
-
 .tag{
 color:#ff5722;
 font-size:12px;
 font-weight:600;
-}
-
-.meta{
-font-size:13px;
-color:gray;
-margin:8px 0;
 }
 
 .btn{
@@ -199,15 +124,15 @@ color:white;
 padding:8px 15px;
 border-radius:4px;
 }
-  <div style="background:#ff5722;color:white;padding:40px;text-align:center;">
-<h2>Plan Your Next International Trip</h2>
-<p>Get visa assistance and travel guidance from experts.</p>
-<a href="./visa-guides.html"
-style="background:white;color:#ff5722;padding:10px 20px;
-text-decoration:none;border-radius:5px;">
-Explore Visa Guides
-</a>
-</div>
+
+/* CTA */
+
+.cta{
+background:#ff5722;
+color:white;
+padding:40px;
+text-align:center;
+}
 
 /* FOOTER */
 
@@ -219,7 +144,6 @@ padding:30px;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -232,18 +156,62 @@ padding:30px;
 <a href="./travel-tips.html">Travel Tips</a>
 <a href="./destination-guides.html">Destination Guides</a>
 </div>
-
 </nav>
 
 <div class="hero">
 <h1>Explore Travel Visa Information & Destination Guides</h1>
-<p>Trip Planning Tips, Visa Requirements & Travel Costs for Indian Travellers</p>
+<p>Trip Planning Tips, Visa Requirements & Travel Costs</p>
 </div>
 
+<div class="container">
+<h2>Explore Travel Categories</h2>
+
+<a href="./visa-guides.html" class="card">
+<div class="card-content">
+<h3>Visa Guides</h3>
+<p>Check visa documents & requirements.</p>
+</div>
+</a>
+
+<a href="./travel-tips.html" class="card">
+<div class="card-content">
+<h3>Travel Tips</h3>
+<p>Budget travel & planning tips.</p>
+</div>
+</a>
+
+<a href="./destination-guides.html" class="card">
+<div class="card-content">
+<h3>Destination Guides</h3>
+<p>Explore travel costs & itineraries.</p>
+</div>
+</a>
+</div>
+
+<div class="container">
+<h2>Latest Articles</h2>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a">
+<div class="card-content">
+<span class="tag">Thailand Visa Guide</span>
+<h3>What Documents Are Required for a Thailand Tourist Visa?</h3>
+<a href="./thailand-tourist-visa-documents.html" class="btn">
+Read Full Article
+</a>
+</div>
+</div>
+</div>
+
+<div class="cta">
+<h2>Plan Your Next International Trip</h2>
+<a href="./visa-guides.html" style="background:white;color:#ff5722;padding:10px 20px;text-decoration:none;border-radius:5px;">
+Explore Visa Guides
+</a>
 </div>
 
 <footer>
-<p>© 2026 Global Travel Guide | Travel Information Blog</p>
+<p>© 2026 Global Travel Guide</p>
 </footer>
 
 </body>
