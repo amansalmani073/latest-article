@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Guides & Tour Packages | Global Travel Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ff5722;
+            --dark-color: #1a1a1a;
+            --light-bg: #f5f7fa;
+            --text-gray: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: #333;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--primary-color); }
+
+        .menu a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .menu a:hover, .menu a.active { color: var(--primary-color); }
+
+        /* PAGE HEADER */
+        .page-header {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 { font-size: 38px; margin-bottom: 10px; }
+
+        /* GRID SYSTEM */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        /* DESTINATION CARD */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover { transform: translateY(-10px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+
+        .card img { width: 100%; height: 250px; object-fit: cover; }
+
+        .card-content { padding: 25px; }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .card-content h2 { 
+            font-size: 22px; 
+            margin-bottom: 12px; 
+            color: var(--dark-color);
+            line-height: 1.3;
+        }
+
+        .meta {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .card-content p { 
+            color: var(--text-gray); 
+            font-size: 14px; 
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: #e64a19; }
+
+        footer {
+            background: var(--dark-color);
+            color: #aaa;
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .navbar { padding: 15px 20px; }
+            .menu { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="./index.html" class="logo">Global<span>Travel</span>Guide</a>
+    <div class="menu">
+        <a href="./index.html">Home</a>
+        <a href="./visa-guides.html">Visa Guides</a>
+        <a href="./travel-tips.html">Travel Tips</a>
+        <a href="./destination-guides.html" class="active">Destinations</a>
+    </div>
+</nav>
+
+<header class="page-header">
+    <h1>Destination Guides</h1>
+    <p>Handpicked Itineraries and Cost Breakdowns for Your Next Trip</p>
+</header>
+
+<div class="container">
+    <div class="grid">
+        
+        <div class="card">
+            <div class="badge">Featured Destination</div>
+            <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=600&q=80" alt="Japan Tour">
+            <div class="card-content">
+                <h2>Japan Tour Package Cost from India in 2026</h2>
+                <div class="meta">
+                    <span><i class="fas fa-clock"></i> 7 min read</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Tokyo, Japan</span>
+                </div>
+                <p>Check updated Japan travel costs, visa process, itinerary and tour package prices for Indian tourists planning a trip to Tokyo.</p>
+                <a href="./japan-tour-package-cost.html" class="btn">Explore Package Details</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="badge" style="background: #2196F3;">Budget Friendly</div>
+            <img src="https://images.unsplash.com/photo-1589133405670-578adad61f00?auto=format&fit=crop&w=600&q=80" alt="Leh Ladakh">
+            <div class="card-content">
+                <h2>Leh Ladakh Group Tour Itinerary 2026</h2>
+                <div class="meta">
+                    <span><i class="fas fa-clock"></i> 5 min read</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Ladakh, India</span>
+                </div>
+                <p>Complete 7-day itinerary for Ladakh starting from Delhi. Includes hotels, bikes, and permits.</p>
+                <a href="#" class="btn" style="background: #2196F3;">Coming Soon</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
