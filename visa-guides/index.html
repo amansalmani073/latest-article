@@ -184,7 +184,7 @@
 </header>
 
 <div class="container">
-    <div class="grid">
+    <div id="visa-blogs-grid" class="grid">
         
         <div class="card">
             <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80" alt="Thailand Visa">
@@ -200,12 +200,67 @@
             </div>
         </div>
 
-        </div>
+    </div>
 </div>
 
 <footer>
     <p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
 </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
+    authDomain: "latest-article.firebaseapp.com",
+    projectId: "latest-article",
+    storageBucket: "latest-article.firebasestorage.app",
+    messagingSenderId: "222132959003",
+    appId: "1:222132959003:web:a329d719efb6cf7c105be"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Sirf 'visa-guides' category fetch karne ke liye query
+  const q = query(
+    collection(db, "user_blogs"), 
+    where("category", "==", "visa-guides"), 
+    orderBy("timestamp", "desc")
+  );
+
+  onSnapshot(q, (snapshot) => {
+    const visaGrid = document.getElementById("visa-blogs-grid");
+    
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        const data = change.doc.data();
+        
+        // HTML tags hatane ke liye
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = data.content;
+        const plainText = tempDiv.textContent || tempDiv.innerText || "";
+        const previewText = plainText.substring(0, 120) + "...";
+
+        const postHTML = `
+          <div class="card">
+              <div class="card-content">
+                  <span class="tag"><i class="fas fa-passport"></i> Visa Guide</span>
+                  <h2>${data.title}</h2>
+                  <div class="meta">
+                      <span><i class="fas fa-user"></i> By ${data.author}</span>
+                  </div>
+                  <p>${previewText}</p>
+                  <a href="#" class="btn">Read Full Guide</a>
+              </div>
+          </div>
+        `;
+        visaGrid.insertAdjacentHTML('beforeend', postHTML);
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
