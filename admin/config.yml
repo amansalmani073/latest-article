@@ -1,5 +1,5 @@
 backend:
-  name: github
+  name: git-gateway
   repo: amansalmani073/latest-article
   branch: main
 
@@ -9,7 +9,7 @@ public_folder: "/latest-article/images/uploads"
 collections:
   - name: "blog"
     label: "Blog Post"
-    folder: "articles" # Naye posts is folder mein jayenge
+    folder: "articles"
     create: true
     slug: "{{slug}}/index"
     extension: "html"
