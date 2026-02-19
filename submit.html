@@ -6,13 +6,13 @@
     <title>Post Your Blog | Global Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/editor.js"></script>
 
     <style>
         :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
         body { font-family: 'Poppins', sans-serif; background: var(--light-bg); padding: 50px 20px; }
         .form-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
         .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 20px; }
         .submit-btn:hover { background: #e64a19; }
         .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #666; font-size: 14px; }
@@ -27,6 +27,13 @@
     <form id="postForm">
         <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
         <input type="text" id="author" placeholder="Your Name" required>
+        
+        <select id="category" required>
+            <option value="" disabled selected>Select Category (Where to post?)</option>
+            <option value="visa-guides">Visa Guide</option>
+            <option value="travel-tips">Travel Tips</option>
+            <option value="destination-guides">Destination Guide</option>
+        </select>
         
         <div id="editor"></div>
         
@@ -70,8 +77,10 @@
     e.preventDefault();
     const btn = e.target.querySelector('button');
     
-    // CKEditor se content lene ke liye getData() method use karein
+    // CKEditor se content lene ke liye
     const blogContent = blogEditor.getData();
+    // Category value lene ke liye
+    const category = document.getElementById('category').value;
 
     if (!blogContent || blogContent.trim() === "") {
         alert("Please write something in the content area.");
@@ -85,11 +94,12 @@
       await addDoc(collection(db, "user_blogs"), {
         title: document.getElementById('title').value,
         author: document.getElementById('author').value,
+        category: category, // Category saved to Firebase
         content: blogContent,
         timestamp: serverTimestamp()
       });
       
-      alert("thank you!.");
+      alert("Thank you! Your blog has been published.");
       window.location.href = "/latest-article/"; 
     } catch (err) {
       alert("Error: " + err.message);
