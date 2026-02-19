@@ -6,17 +6,7 @@
     <title>Post Your Blog | Global Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-      tinymce.init({
-        selector: '#content',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        height: 400,
-        branding: false,
-        placeholder: 'Write your full travel guide or experience here...'
-      });
-    </script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
     <style>
         :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
@@ -26,7 +16,8 @@
         .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 20px; }
         .submit-btn:hover { background: #e64a19; }
         .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #666; font-size: 14px; }
-        .tox-tinymce { border-radius: 8px !important; margin-top: 10px; }
+        /* Editor height fix */
+        .ck-editor__editable { min-height: 300px; border-radius: 0 0 8px 8px !important; }
     </style>
 </head>
 <body>
@@ -37,7 +28,7 @@
         <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
         <input type="text" id="author" placeholder="Your Name" required>
         
-        <textarea id="content"></textarea>
+        <div id="editor"></div>
         
         <button type="submit" class="submit-btn">Publish My Blog</button>
     </form>
@@ -48,6 +39,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
     authDomain: "latest-article.firebaseapp.com",
@@ -61,12 +53,25 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  // Initialize CKEditor
+  let blogEditor;
+  ClassicEditor
+    .create(document.querySelector('#editor'), {
+        placeholder: 'Write your full travel guide or experience here...'
+    })
+    .then(editor => {
+        blogEditor = editor;
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
   document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = e.target.querySelector('button');
     
-    // TinyMCE ka formatted content lene ke liye
-    const blogContent = tinymce.get('content').getContent();
+    // CKEditor se content lene ke liye getData() method use karein
+    const blogContent = blogEditor.getData();
 
     if (!blogContent || blogContent.trim() === "") {
         alert("Please write something in the content area.");
@@ -80,7 +85,7 @@
       await addDoc(collection(db, "user_blogs"), {
         title: document.getElementById('title').value,
         author: document.getElementById('author').value,
-        content: blogContent, // Formatted HTML content
+        content: blogContent,
         timestamp: serverTimestamp()
       });
       
