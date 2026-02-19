@@ -6,38 +6,41 @@
     <title>Post Your Blog | Global Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Aapki existing styling yahan aayegi */
         :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
         body { font-family: 'Poppins', sans-serif; background: var(--light-bg); padding: 50px 20px; }
         .form-container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
-        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .submit-btn:hover { background: #e64a19; }
+        .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: var(--text-gray); font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="form-container">
-    <h2 style="text-align: center; color: var(--dark-color);">Share Your Travel Story</h2>
+    <h2 style="text-align: center; color: var(--dark-color); margin-bottom: 20px;">Share Your Travel Story</h2>
     <form id="postForm">
         <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
         <input type="text" id="author" placeholder="Your Name" required>
         <textarea id="content" rows="10" placeholder="Write your full travel guide or experience here..." required></textarea>
         <button type="submit" class="submit-btn">Publish My Blog</button>
     </form>
+    <a href="/latest-article/" class="back-link">← Back to Home</a>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // ⚠️ PASTE YOUR CONFIG HERE (From Firebase Console -> Project Settings)
+  // Aapka Actual Config (Verified from screenshot)
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
+    apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
     authDomain: "latest-article.firebaseapp.com",
     projectId: "latest-article",
-    storageBucket: "latest-article.appspot.com",
-    messagingSenderId: "YOUR_ID",
-    appId: "YOUR_APP_ID"
+    storageBucket: "latest-article.firebasestorage.app",
+    messagingSenderId: "222132959003",
+    appId: "1:222132959003:web:a329d719efb6cf7c105be",
+    measurementId: "G-7635RMNN90"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -50,14 +53,16 @@
     btn.disabled = true;
 
     try {
+      // "user_blogs" collection mein data save ho raha hai
       await addDoc(collection(db, "user_blogs"), {
         title: document.getElementById('title').value,
         author: document.getElementById('author').value,
         content: document.getElementById('content').value,
         timestamp: serverTimestamp()
       });
+      
       alert("Mubarak ho! Aapka blog publish ho gaya.");
-      window.location.href = "/latest-article/"; // Home page par wapas bhej dega
+      window.location.href = "/latest-article/"; 
     } catch (err) {
       alert("Error: " + err.message);
       btn.disabled = false;
