@@ -90,13 +90,15 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             transition: 0.3s ease;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover { transform: translateY(-10px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
 
         .card img { width: 100%; height: 250px; object-fit: cover; }
 
-        .card-content { padding: 25px; }
+        .card-content { padding: 25px; flex-grow: 1; }
 
         .badge {
             position: absolute;
@@ -143,6 +145,7 @@
             font-weight: 600;
             text-align: center;
             transition: 0.3s;
+            margin-top: auto;
         }
 
         .btn:hover { background: #e64a19; }
@@ -181,7 +184,7 @@
 </header>
 
 <div class="container">
-    <div class="grid">
+    <div id="dest-blogs-grid" class="grid">
         
         <div class="card">
             <div class="badge">Featured Destination</div>
@@ -197,26 +200,68 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="badge" style="background: #2196F3;">Budget Friendly</div>
-            <img src="https://images.unsplash.com/photo-1589133405670-578adad61f00?auto=format&fit=crop&w=600&q=80" alt="Leh Ladakh">
-            <div class="card-content">
-                <h2>Leh Ladakh Group Tour Itinerary 2026</h2>
-                <div class="meta">
-                    <span><i class="fas fa-clock"></i> 5 min read</span>
-                    <span><i class="fas fa-map-marker-alt"></i> Ladakh, India</span>
-                </div>
-                <p>Complete 7-day itinerary for Ladakh starting from Delhi. Includes hotels, bikes, and permits.</p>
-                <a href="#" class="btn" style="background: #2196F3;">Coming Soon</a>
-            </div>
         </div>
-
-    </div>
 </div>
 
 <footer>
     <p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
 </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
+    authDomain: "latest-article.firebaseapp.com",
+    projectId: "latest-article",
+    storageBucket: "latest-article.firebasestorage.app",
+    messagingSenderId: "222132959003",
+    appId: "1:222132959003:web:a329d719efb6cf7c105be"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Sirf 'destination-guides' category fetch karne ke liye query
+  const q = query(
+    collection(db, "user_blogs"), 
+    where("category", "==", "destination-guides"), 
+    orderBy("timestamp", "desc")
+  );
+
+  onSnapshot(q, (snapshot) => {
+    const destGrid = document.getElementById("dest-blogs-grid");
+    
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        const data = change.doc.data();
+        
+        // Formatted content se tags hatane ke liye
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = data.content;
+        const plainText = tempDiv.textContent || tempDiv.innerText || "";
+        const previewText = plainText.substring(0, 120) + "...";
+
+        const postHTML = `
+          <div class="card">
+              <div class="badge">User Shared</div>
+              <div class="card-content">
+                  <h2>${data.title}</h2>
+                  <div class="meta">
+                      <span><i class="fas fa-user"></i> By ${data.author}</span>
+                  </div>
+                  <p>${previewText}</p>
+                  <a href="#" class="btn">View Destination Guide</a>
+              </div>
+          </div>
+        `;
+        destGrid.insertAdjacentHTML('beforeend', postHTML);
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
