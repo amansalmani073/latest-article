@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Your Blog | Global Travel Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Aapki existing styling yahan aayegi */
+        :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
+        body { font-family: 'Poppins', sans-serif; background: var(--light-bg); padding: 50px 20px; }
+        .form-container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2 style="text-align: center; color: var(--dark-color);">Share Your Travel Story</h2>
+    <form id="postForm">
+        <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
+        <input type="text" id="author" placeholder="Your Name" required>
+        <textarea id="content" rows="10" placeholder="Write your full travel guide or experience here..." required></textarea>
+        <button type="submit" class="submit-btn">Publish My Blog</button>
+    </form>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  // ⚠️ PASTE YOUR CONFIG HERE (From Firebase Console -> Project Settings)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "latest-article.firebaseapp.com",
+    projectId: "latest-article",
+    storageBucket: "latest-article.appspot.com",
+    messagingSenderId: "YOUR_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  document.getElementById('postForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.innerText = "Publishing...";
+    btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, "user_blogs"), {
+        title: document.getElementById('title').value,
+        author: document.getElementById('author').value,
+        content: document.getElementById('content').value,
+        timestamp: serverTimestamp()
+      });
+      alert("Mubarak ho! Aapka blog publish ho gaya.");
+      window.location.href = "/latest-article/"; // Home page par wapas bhej dega
+    } catch (err) {
+      alert("Error: " + err.message);
+      btn.disabled = false;
+      btn.innerText = "Publish My Blog";
+    }
+  });
+</script>
+
+</body>
+</html>
