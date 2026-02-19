@@ -27,7 +27,7 @@
             color: #333;
         }
 
-        /* NAVBAR - Enhanced */
+        /* NAVBAR */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -59,7 +59,7 @@
 
         .menu a:hover { color: var(--primary-color); }
 
-        /* HERO - Added Overlay and Spacing */
+        /* HERO */
         .hero {
             position: relative;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
@@ -76,7 +76,6 @@
         .hero h1 { font-size: 45px; max-width: 800px; line-height: 1.2; }
         .hero p { margin-top: 15px; font-size: 18px; opacity: 0.9; }
 
-        /* SECTION TITLES */
         .section-title {
             text-align: center;
             margin-bottom: 40px;
@@ -90,14 +89,12 @@
             padding: 60px 20px;
         }
 
-        /* GRID SYSTEM - 3 Columns */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
 
-        /* CARD - Redesigned */
         .card {
             background: white;
             border-radius: 12px;
@@ -110,13 +107,9 @@
         }
 
         .card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
         .card img { width: 100%; height: 220px; object-fit: cover; }
-
         .card-content { padding: 25px; }
-
         .card-content h3 { margin-bottom: 10px; font-size: 20px; color: var(--dark-color); }
-
         .card-content p { color: var(--text-gray); font-size: 14px; margin-bottom: 15px; }
 
         .tag {
@@ -144,7 +137,6 @@
 
         .btn:hover { background: #e64a19; }
 
-        /* CTA SECTION */
         .cta {
             background: var(--primary-color);
             color: white;
@@ -152,9 +144,6 @@
             text-align: center;
         }
 
-        .cta h2 { font-size: 32px; margin-bottom: 20px; }
-
-        /* FOOTER */
         footer {
             background: var(--dark-color);
             color: #aaa;
@@ -162,16 +151,8 @@
             padding: 40px;
             font-size: 14px;
         }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .navbar { padding: 15px 20px; }
-            .menu { display: none; } /* Add hamburger icon later if needed */
-            .hero h1 { font-size: 30px; }
-        }
     </style>
 </head>
-
 <body>
 
 <nav class="navbar">
@@ -181,6 +162,7 @@
         <a href="/latest-article/visa-guides/">Visa Guides</a>
         <a href="/latest-article/travel-tips/">Travel Tips</a>
         <a href="/latest-article/destination-guides/">Destination Guides</a>
+        <a href="/latest-article/admin/" style="border: 1px solid var(--primary-color); padding: 5px 15px; border-radius: 20px;">Admin Login</a>
     </div>
 </nav>
 
@@ -192,7 +174,7 @@
 <div class="container">
     <h2 class="section-title">Explore Travel Categories</h2>
     <div class="grid">
-        <a href="./visa-guides.html" class="card">
+        <a href="/latest-article/visa-guides/" class="card">
             <div class="card-content" style="text-align: center; padding: 40px;">
                 <i class="fas fa-passport" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
                 <h3>Visa Guides</h3>
@@ -200,7 +182,7 @@
             </div>
         </a>
 
-        <a href="./travel-tips.html" class="card">
+        <a href="/latest-article/travel-tips/" class="card">
             <div class="card-content" style="text-align: center; padding: 40px;">
                 <i class="fas fa-lightbulb" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
                 <h3>Travel Tips</h3>
@@ -208,7 +190,7 @@
             </div>
         </a>
 
-        <a href="./destination-guides.html" class="card">
+        <a href="/latest-article/destination-guides/" class="card">
             <div class="card-content" style="text-align: center; padding: 40px;">
                 <i class="fas fa-map-marked-alt" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
                 <h3>Destinations</h3>
@@ -226,28 +208,23 @@
             <div class="card-content">
                 <span class="tag">Visa Guide</span>
                 <h3>Thailand Tourist Visa Documents</h3>
-                <p>Detailed checklist of documents required for Indian & UAE residents for a Thailand trip.</p>
-                <a href="./thailand-tourist-visa-documents.html" class="btn">Read Article</a>
+                <p>Detailed checklist of documents required for Indian & UAE residents.</p>
+                <a href="#" class="btn">Read Article</a>
             </div>
         </div>
-
-        </div>
+    </div>
 </div>
 
 <div class="cta">
     <h2>Ready to Plan Your Next Adventure?</h2>
     <p style="margin-bottom: 25px; opacity: 0.9;">Get accurate visa info and budget guides in one place.</p>
-    <a href="./visa-guides.html" style="background:white; color:var(--primary-color); padding:12px 30px; text-decoration:none; border-radius:30px; font-weight:700; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+    <a href="/latest-article/visa-guides/" style="background:white; color:var(--primary-color); padding:12px 30px; text-decoration:none; border-radius:30px; font-weight:700; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
         Get Started Now
     </a>
 </div>
 
 <footer>
     <p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
-    <div style="margin-top: 15px;">
-        <a href="#" style="color:#aaa; margin:0 10px; text-decoration:none;">Privacy Policy</a> | 
-        <a href="#" style="color:#aaa; margin:0 10px; text-decoration:none;">Contact Us</a>
-    </div>
 </footer>
 
 </body>
