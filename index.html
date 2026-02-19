@@ -251,20 +251,25 @@
 
   onSnapshot(q, (snapshot) => {
     const grid = document.getElementById("user-blogs-grid");
-    // Purane content ko clear nahi karte taaki static post rahe, ya clear karke sab naya dikhayein
-    // Is example mein hum static post ke niche naye posts add karenge
     
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
         const data = change.doc.data();
+        
+        // Formatted text se tags hatane ke liye ek temporary element use karte hain
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = data.content;
+        const plainText = tempDiv.textContent || tempDiv.innerText || "";
+        const previewText = plainText.substring(0, 100) + "...";
+
         const postHTML = `
           <div class="card">
               <div class="card-content">
                   <span class="tag">User Post</span>
                   <h3>${data.title}</h3>
-                  <p style="font-size:12px; color:#888;">By ${data.author}</p>
-                  <p>${data.content.substring(0, 100)}...</p>
-                  <a href="#" class="btn" style="font-size:12px; padding:5px 15px;">Read Full Story</a>
+                  <p style="font-size:12px; color:#888; margin-bottom: 10px;">By ${data.author}</p>
+                  <p>${previewText}</p>
+                  <a href="#" class="btn" style="font-size:12px; padding:5px 15px; margin-top: 10px;">Read Full Story</a>
               </div>
           </div>
         `;
