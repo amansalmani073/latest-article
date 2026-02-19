@@ -5,14 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Your Blog | Global Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+      tinymce.init({
+        selector: '#content',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        height: 400,
+        branding: false,
+        placeholder: 'Write your full travel guide or experience here...'
+      });
+    </script>
+
     <style>
         :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
         body { font-family: 'Poppins', sans-serif; background: var(--light-bg); padding: 50px 20px; }
-        .form-container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .form-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 20px; }
         .submit-btn:hover { background: #e64a19; }
-        .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: var(--text-gray); font-size: 14px; }
+        .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #666; font-size: 14px; }
+        .tox-tinymce { border-radius: 8px !important; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -22,7 +36,9 @@
     <form id="postForm">
         <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
         <input type="text" id="author" placeholder="Your Name" required>
-        <textarea id="content" rows="10" placeholder="Write your full travel guide or experience here..." required></textarea>
+        
+        <textarea id="content"></textarea>
+        
         <button type="submit" class="submit-btn">Publish My Blog</button>
     </form>
     <a href="/latest-article/" class="back-link">← Back to Home</a>
@@ -32,7 +48,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // Aapka Actual Config (Verified from screenshot)
   const firebaseConfig = {
     apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
     authDomain: "latest-article.firebaseapp.com",
@@ -49,15 +64,23 @@
   document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = e.target.querySelector('button');
+    
+    // TinyMCE ka formatted content lene ke liye
+    const blogContent = tinymce.get('content').getContent();
+
+    if (!blogContent || blogContent.trim() === "") {
+        alert("Please write something in the content area.");
+        return;
+    }
+
     btn.innerText = "Publishing...";
     btn.disabled = true;
 
     try {
-      // "user_blogs" collection mein data save ho raha hai
       await addDoc(collection(db, "user_blogs"), {
         title: document.getElementById('title').value,
         author: document.getElementById('author').value,
-        content: document.getElementById('content').value,
+        content: blogContent, // Formatted HTML content
         timestamp: serverTimestamp()
       });
       
