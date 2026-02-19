@@ -184,7 +184,7 @@
 </header>
 
 <div class="container">
-    <div class="grid">
+    <div id="tips-blogs-grid" class="grid">
         
         <div class="card">
             <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80" alt="Leh Ladakh">
@@ -200,25 +200,67 @@
             </div>
         </div>
 
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1503221043305-f7498f8b7888?auto=format&fit=crop&w=600&q=80" alt="Budget Travel">
-            <div class="card-content">
-                <span class="tag"><i class="fas fa-wallet"></i> Budgeting</span>
-                <h2>10 Ways to Save Money on International Flights</h2>
-                <div class="meta">
-                    <span><i class="far fa-calendar-alt"></i> Feb 18, 2026</span>
-                </div>
-                <p>Learn how to use incognito mode, flight alerts, and layovers to slash your travel costs by half.</p>
-                <a href="#" class="btn">Coming Soon</a>
-            </div>
         </div>
-
-    </div>
 </div>
 
 <footer>
     <p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
 </footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
+    authDomain: "latest-article.firebaseapp.com",
+    projectId: "latest-article",
+    storageBucket: "latest-article.firebasestorage.app",
+    messagingSenderId: "222132959003",
+    appId: "1:222132959003:web:a329d719efb6cf7c105be"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Filter for 'travel-tips' category
+  const q = query(
+    collection(db, "user_blogs"), 
+    where("category", "==", "travel-tips"), 
+    orderBy("timestamp", "desc")
+  );
+
+  onSnapshot(q, (snapshot) => {
+    const tipsGrid = document.getElementById("tips-blogs-grid");
+    
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        const data = change.doc.data();
+        
+        // Convert HTML content to plain text preview
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = data.content;
+        const plainText = tempDiv.textContent || tempDiv.innerText || "";
+        const previewText = plainText.substring(0, 120) + "...";
+
+        const postHTML = `
+          <div class="card">
+              <div class="card-content">
+                  <span class="tag"><i class="fas fa-wallet"></i> Travel Tip</span>
+                  <h2>${data.title}</h2>
+                  <div class="meta">
+                      <span><i class="fas fa-user"></i> By ${data.author}</span>
+                  </div>
+                  <p>${previewText}</p>
+                  <a href="#" class="btn">View Travel Tip</a>
+              </div>
+          </div>
+        `;
+        tipsGrid.insertAdjacentHTML('beforeend', postHTML);
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
