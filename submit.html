@@ -6,18 +6,19 @@
     <title>Post Your Blog | Global Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/editor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
     <style>
         :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
         body { font-family: 'Poppins', sans-serif; background: var(--light-bg); padding: 50px 20px; }
         .form-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; display: block; }
         .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 20px; }
         .submit-btn:hover { background: #e64a19; }
         .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #666; font-size: 14px; }
-        /* Editor height fix */
-        .ck-editor__editable { min-height: 300px; border-radius: 0 0 8px 8px !important; }
+        
+        /* ZAROORI: Editor ki height fix karne ke liye */
+        .ck-editor__editable { min-height: 300px !important; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -35,7 +36,9 @@
             <option value="destination-guides">Destination Guide</option>
         </select>
         
-        <div id="editor"></div>
+        <div id="editor-container">
+            <textarea id="editor" placeholder="Write your story here..."></textarea>
+        </div>
         
         <button type="submit" class="submit-btn">Publish My Blog</button>
     </form>
@@ -46,40 +49,37 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
     authDomain: "latest-article.firebaseapp.com",
     projectId: "latest-article",
     storageBucket: "latest-article.firebasestorage.app",
     messagingSenderId: "222132959003",
-    appId: "1:222132959003:web:a329d719efb6cf7c105be",
-    measurementId: "G-7635RMNN90"
+    appId: "1:222132959003:web:a329d719efb6cf7c105be"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Initialize CKEditor
   let blogEditor;
+
+  // Editor loading logic
   ClassicEditor
-    .create(document.querySelector('#editor'), {
-        placeholder: 'Write your full travel guide or experience here...'
-    })
+    .create(document.querySelector('#editor'))
     .then(editor => {
         blogEditor = editor;
+        console.log("Editor is ready!");
     })
     .catch(error => {
-        console.error(error);
+        console.error("Editor error:", error);
     });
 
   document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = e.target.querySelector('button');
     
-    // CKEditor se content lene ke liye
+    // Editor se content lena
     const blogContent = blogEditor.getData();
-    // Category value lene ke liye
     const category = document.getElementById('category').value;
 
     if (!blogContent || blogContent.trim() === "") {
@@ -94,12 +94,12 @@
       await addDoc(collection(db, "user_blogs"), {
         title: document.getElementById('title').value,
         author: document.getElementById('author').value,
-        category: category, // Category saved to Firebase
+        category: category,
         content: blogContent,
         timestamp: serverTimestamp()
       });
       
-      alert("Thank you! Your blog has been published.");
+      alert("Thank you! Published successfully.");
       window.location.href = "/latest-article/"; 
     } catch (err) {
       alert("Error: " + err.message);
