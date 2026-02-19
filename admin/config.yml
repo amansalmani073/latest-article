@@ -2,6 +2,7 @@ backend:
   name: git-gateway
   repo: amansalmani073/latest-article
   branch: main
+  site_domain: enchanting-manatee-ff58a1.netlify.app
 
 media_folder: "images/uploads"
 public_folder: "/latest-article/images/uploads"
