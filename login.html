@@ -1,0 +1,19 @@
+<div class="form-container">
+    <h2>Admin Login</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+</div>
+
+<script type="module">
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    const auth = getAuth();
+
+    window.login = () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('password').value;
+        signInWithEmailAndPassword(auth, e, p)
+            .then(() => { window.location.href = "submit.html"; })
+            .catch(err => alert(err.message));
+    }
+</script>
