@@ -1,19 +1,75 @@
-<div class="form-container">
-    <h2>Admin Login</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Global Travel Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary-color: #ff5722; --dark-color: #1a1a1a; }
+        body { font-family: 'Poppins', sans-serif; background: #f5f7fa; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--dark-color); text-decoration: none; margin-bottom: 30px; display: block; }
+        .logo span { color: var(--primary-color); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+        .login-btn { background: var(--primary-color); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 10px; }
+        .login-btn:hover { background: #e64a19; }
+        .error-msg { color: red; font-size: 13px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <a href="/latest-article/" class="logo">Global<span>Travel</span>Guide</a>
+    <h2 style="margin-bottom: 20px; color: #333;">Admin Access</h2>
+    
+    <input type="email" id="email" placeholder="Admin Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    
+    <div id="error" class="error-msg">Invalid email or password.</div>
+    
+    <button id="loginBtn" class="login-btn">Secure Login</button>
+    
+    <p style="margin-top: 20px; font-size: 13px; color: #888;">Only authorized admins can post blogs.</p>
 </div>
 
 <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    const auth = getAuth();
 
-    window.login = () => {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('password').value;
-        signInWithEmailAndPassword(auth, e, p)
-            .then(() => { window.location.href = "submit.html"; })
-            .catch(err => alert(err.message));
-    }
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
+        authDomain: "latest-article.firebaseapp.com",
+        projectId: "latest-article",
+        appId: "1:222132959003:web:a329d719efb6cf7c105be"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('error');
+        const btn = document.getElementById('loginBtn');
+
+        btn.innerText = "Authenticating...";
+        btn.disabled = true;
+        errorDiv.style.display = "none";
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Success: Go to submit page
+                window.location.href = "submit.html";
+            })
+            .catch((error) => {
+                btn.innerText = "Secure Login";
+                btn.disabled = false;
+                errorDiv.innerText = error.message;
+                errorDiv.style.display = "block";
+            });
+    });
 </script>
+
+</body>
+</html>
