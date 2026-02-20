@@ -249,7 +249,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const q = query(collection(db, "user_blogs"), orderBy("timestamp", "desc"));
+  const q = query(collection(db, "user_blogs"), orderBy("createdAt", "desc")); // Change from timestamp to createdAt
 
   onSnapshot(q, (snapshot) => {
     const grid = document.getElementById("user-blogs-grid");
