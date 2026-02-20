@@ -17,13 +17,14 @@
         .submit-btn:hover { background: #e64a19; }
         .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #666; font-size: 14px; }
         
-        /* ZAROORI: Editor ki height fix karne ke liye */
         .ck-editor__editable { min-height: 300px !important; margin-bottom: 10px; }
+        #user-info { text-align: right; font-size: 12px; color: #ff5722; margin-bottom: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
 
 <div class="form-container">
+    <div id="user-info">Checking access...</div>
     <h2 style="text-align: center; color: var(--dark-color); margin-bottom: 20px;">Share Your Travel Story</h2>
     <form id="postForm">
         <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
@@ -48,6 +49,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
@@ -60,15 +62,23 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // LOGIN CHECK: Agar login nahi hai toh login page par bhej do
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      alert("Please login first to post a blog.");
+      window.location.href = "/latest-article/login.html";
+    } else {
+      document.getElementById('user-info').innerText = "Logged in as: " + user.email;
+    }
+  });
 
   let blogEditor;
-
-  // Editor loading logic
   ClassicEditor
     .create(document.querySelector('#editor'))
     .then(editor => {
         blogEditor = editor;
-        console.log("Editor is ready!");
     })
     .catch(error => {
         console.error("Editor error:", error);
@@ -77,8 +87,6 @@
   document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = e.target.querySelector('button');
-    
-    // Editor se content lena
     const blogContent = blogEditor.getData();
     const category = document.getElementById('category').value;
 
@@ -94,6 +102,7 @@
       await addDoc(collection(db, "user_blogs"), {
         title: document.getElementById('title').value,
         author: document.getElementById('author').value,
+        authorEmail: auth.currentUser.email, // Logged-in user ki email save hogi
         category: category,
         content: blogContent,
         timestamp: serverTimestamp()
