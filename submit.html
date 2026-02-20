@@ -98,14 +98,14 @@
         btn.innerText = "Publishing...";
 
         try {
-            await addDoc(collection(db, "user_blogs"), {
-                title: title,
-                image: image,
-                category: category,
-                content: content,
-                author: "Admin",
-                createdAt: serverTimestamp()
-            });
+           await addDoc(collection(db, "user_blogs"), {
+    title: title,
+    image: image,
+    category: category,
+    content: content,
+    author: "Admin",
+    timestamp: serverTimestamp()  // Change from createdAt to timestamp
+});
 
             statusDiv.style.display = "block";
             statusDiv.style.backgroundColor = "#e8f5e9";
