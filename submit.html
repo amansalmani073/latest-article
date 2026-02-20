@@ -3,120 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Your Blog | Global Travel Guide</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-
+    <title>Post a New Blog | Global Travel Guide</title>
     <style>
-        :root { --primary-color: #ff5722; --dark-color: #1a1a1a; --light-bg: #f5f7fa; }
-        body { font-family: 'Poppins', sans-serif; background: var(--light-bg); padding: 50px 20px; }
-        .form-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; display: block; }
-        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 20px; }
-        .submit-btn:hover { background: #e64a19; }
-        .back-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #666; font-size: 14px; }
-        
-        .ck-editor__editable { min-height: 300px !important; margin-bottom: 10px; }
-        #user-info { text-align: right; font-size: 12px; color: #ff5722; margin-bottom: 10px; font-weight: 600; }
+        :root { --primary-color: #ff5722; --dark-color: #1a1a1a; }
+        body { font-family: 'Poppins', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 15px; }
+        h1 { color: var(--dark-color); margin: 0; font-size: 24px; }
+        .user-email { font-size: 14px; color: #666; }
+        .logout-btn { background: #f44336; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 20px; }
+        #status { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <div id="user-info">Checking access...</div>
-    <h2 style="text-align: center; color: var(--dark-color); margin-bottom: 20px;">Share Your Travel Story</h2>
-    <form id="postForm">
-        <input type="text" id="title" placeholder="Article Title (e.g. My Trip to Dubai)" required>
-        <input type="text" id="author" placeholder="Your Name" required>
-        
-        <select id="category" required>
-            <option value="" disabled selected>Select Category (Where to post?)</option>
-            <option value="visa-guides">Visa Guide</option>
-            <option value="travel-tips">Travel Tips</option>
-            <option value="destination-guides">Destination Guide</option>
-        </select>
-        
-        <div id="editor-container">
-            <textarea id="editor" placeholder="Write your story here..."></textarea>
+<div class="container">
+    <div class="header">
+        <h1>Create New Post</h1>
+        <div>
+            <span id="userEmail" class="user-email"></span>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
         </div>
-        
-        <button type="submit" class="submit-btn">Publish My Blog</button>
-    </form>
-    <a href="/latest-article/" class="back-link">← Back to Home</a>
+    </div>
+
+    <input type="text" id="blogTitle" placeholder="Enter Blog Title" required>
+    <input type="text" id="blogImage" placeholder="Image URL (e.g., https://example.com/image.jpg)" required>
+    <select id="blogCategory">
+        <option value="Travel">Travel</option>
+        <option value="Food">Food</option>
+        <option value="Guide">Guide</option>
+    </select>
+    <textarea id="blogContent" rows="10" placeholder="Write your content here..." required></textarea>
+    
+    <div id="status"></div>
+    <button id="submitBtn" class="submit-btn">Publish Blog Post</button>
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
-    authDomain: "latest-article.firebaseapp.com",
-    projectId: "latest-article",
-    storageBucket: "latest-article.firebasestorage.app",
-    messagingSenderId: "222132959003",
-    appId: "1:222132959003:web:a329d719efb6cf7c105be"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBSTMljE8h9saIldRcuKbaKp84t5hx9s",
+        authDomain: "latest-article.firebaseapp.com",
+        projectId: "latest-article",
+        storageBucket: "latest-article.firebasestorage.app",
+        messagingSenderId: "222132959003",
+        appId: "1:222132959003:web:a329d719efb6cf7c105be"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  // LOGIN CHECK: Agar login nahi hai toh login page par bhej do
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      alert("Please login first to post a blog.");
-      window.location.href = "/latest-article/login.html";
-    } else {
-      document.getElementById('user-info').innerText = "Logged in as: " + user.email;
-    }
-  });
-
-  let blogEditor;
-  ClassicEditor
-    .create(document.querySelector('#editor'))
-    .then(editor => {
-        blogEditor = editor;
-    })
-    .catch(error => {
-        console.error("Editor error:", error);
+    // Authentication Guard
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('userEmail').innerText = user.email;
+        } else {
+            alert("Access Denied. Please login first.");
+            window.location.href = "login.html";
+        }
     });
 
-  document.getElementById('postForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    const blogContent = blogEditor.getData();
-    const category = document.getElementById('category').value;
+    // Logout Functionality
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = "login.html";
+        });
+    });
 
-    if (!blogContent || blogContent.trim() === "") {
-        alert("Please write something in the content area.");
-        return;
-    }
+    // Submit Blog Functionality
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+        const title = document.getElementById('blogTitle').value;
+        const image = document.getElementById('blogImage').value;
+        const category = document.getElementById('blogCategory').value;
+        const content = document.getElementById('blogContent').value;
+        const statusDiv = document.getElementById('status');
+        const btn = document.getElementById('submitBtn');
 
-    btn.innerText = "Publishing...";
-    btn.disabled = true;
+        if(!title || !image || !content) {
+            alert("Please fill all fields");
+            return;
+        }
 
-    try {
-      await addDoc(collection(db, "user_blogs"), {
-        title: document.getElementById('title').value,
-        author: document.getElementById('author').value,
-        authorEmail: auth.currentUser.email, // Logged-in user ki email save hogi
-        category: category,
-        content: blogContent,
-        timestamp: serverTimestamp()
-      });
-      
-      alert("Thank you! Published successfully.");
-      window.location.href = "/latest-article/"; 
-    } catch (err) {
-      alert("Error: " + err.message);
-      btn.disabled = false;
-      btn.innerText = "Publish My Blog";
-    }
-  });
+        btn.disabled = true;
+        btn.innerText = "Publishing...";
+
+        try {
+            await addDoc(collection(db, "user_blogs"), {
+                title: title,
+                image: image,
+                category: category,
+                content: content,
+                author: auth.currentUser.email,
+                createdAt: serverTimestamp()
+            });
+
+            statusDiv.style.display = "block";
+            statusDiv.style.backgroundColor = "#e8f5e9";
+            statusDiv.style.color = "#2e7d32";
+            statusDiv.innerText = "Blog published successfully!";
+            
+            // Clear fields
+            document.getElementById('blogTitle').value = "";
+            document.getElementById('blogImage').value = "";
+            document.getElementById('blogContent').value = "";
+
+        } catch (error) {
+            statusDiv.style.display = "block";
+            statusDiv.style.backgroundColor = "#ffebee";
+            statusDiv.style.color = "#c62828";
+            statusDiv.innerText = "Error: " + error.message;
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Publish Blog Post";
+        }
+    });
 </script>
-
 </body>
 </html>
