@@ -5,30 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Global Travel Guide</title>
     <style>
-        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f4f4f4; }
-        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #ff5722; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        #error { color: red; font-size: 12px; margin-top: 10px; display: none; }
+        :root { --primary-color: #ff5722; }
+        body { font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f4f4f4; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; border-top: 5px solid var(--primary-color); }
+        h2 { color: #333; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--primary-color); }
+        button { width: 100%; padding: 14px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; margin-top: 10px; }
+        button:hover { background: #e64a19; transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        #error { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 5px; font-size: 13px; margin-top: 15px; display: none; border: 1px solid #ffcdd2; }
+        .login-link { margin-top: 20px; font-size: 13px; color: #666; }
+        .login-link a { color: var(--primary-color); text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>Join Travel Guide</h2>
-    <input type="email" id="email" placeholder="Email" required>
+    <p style="font-size: 13px; color: #888; margin-bottom: 20px;">Create an account to start posting blogs.</p>
+    
+    <input type="email" id="email" placeholder="Email Address" required>
     <input type="password" id="password" placeholder="Password (min. 6 chars)" required>
+    
     <div id="error"></div>
+    
     <button id="regBtn">Create Account</button>
+    
+    <div class="login-link">
+        Already have an account? <a href="login.html">Login here</a>
+    </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // AAPKI ACTUAL CONFIG
     const firebaseConfig = {
-        apiKey: "AIzaSyCBSTMljE8h9sa1IldRcuKbaKp84t5hx9s",
+        apiKey: "AIzaSyCBSTMljE8h9saIldRcuKbaKp84t5hx9s",
         authDomain: "latest-article.firebaseapp.com",
         projectId: "latest-article",
         appId: "1:222132959003:web:a329d719efb6cf7c105be"
@@ -37,17 +51,39 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    document.getElementById('regBtn').addEventListener('click', async () => {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('password').value;
-        const errDiv = document.getElementById('error');
+    const regBtn = document.getElementById('regBtn');
+    const errorDiv = document.getElementById('error');
+
+    regBtn.addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if(!email || !password) {
+            errorDiv.innerText = "Please fill in all fields.";
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        regBtn.innerText = "Processing...";
+        regBtn.disabled = true;
+        errorDiv.style.display = "none";
 
         try {
-            await createUserWithEmailAndPassword(auth, e, p);
+            await setPersistence(auth, browserLocalPersistence);
+            await createUserWithEmailAndPassword(auth, email, password);
             window.location.href = "submit.html"; 
         } catch (error) {
-            errDiv.innerText = error.message;
-            errDiv.style.display = "block";
+            regBtn.innerText = "Create Account";
+            regBtn.disabled = false;
+            errorDiv.style.display = "block";
+            
+            if (error.code === 'auth/email-already-in-use') {
+                errorDiv.innerText = "Email already registered.";
+            } else if (error.code === 'auth/weak-password') {
+                errorDiv.innerText = "Password is too weak.";
+            } else {
+                errorDiv.innerText = error.message;
+            }
         }
     });
 </script>
