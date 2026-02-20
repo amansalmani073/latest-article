@@ -46,7 +46,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Access Control: Redirect if PIN was not verified
+    // 1. PIN System Security Check (No Firebase Auth involved)
     if (localStorage.getItem('adminAuthorized') !== 'true') {
         window.location.href = "login.html";
     }
@@ -63,13 +63,13 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Logout Functionality
+    // 2. Simple Logout (Clears PIN session)
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('adminAuthorized');
         window.location.href = "login.html";
     });
 
-    // Submit Blog Functionality
+    // 3. Publishing Logic
     document.getElementById('submitBtn').addEventListener('click', async () => {
         const title = document.getElementById('blogTitle').value;
         const image = document.getElementById('blogImage').value;
