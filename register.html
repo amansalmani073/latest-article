@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Global Travel Guide</title>
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f4f4f4; }
+        .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #ff5722; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #error { color: red; font-size: 12px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Join Travel Guide</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password (min. 6 chars)" required>
+    <div id="error"></div>
+    <button id="regBtn">Create Account</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+    // AAPKI ACTUAL CONFIG
+    const firebaseConfig = {
+        apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
+        authDomain: "latest-article.firebaseapp.com",
+        projectId: "latest-article",
+        appId: "1:222132959003:web:a329d719efb6cf7c105be"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('regBtn').addEventListener('click', async () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('password').value;
+        const errDiv = document.getElementById('error');
+
+        try {
+            await createUserWithEmailAndPassword(auth, e, p);
+            window.location.href = "submit.html"; 
+        } catch (error) {
+            errDiv.innerText = error.message;
+            errDiv.style.display = "block";
+        }
+    });
+</script>
+</body>
+</html>
