@@ -10,11 +10,12 @@
         .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 15px; }
         h1 { color: var(--dark-color); margin: 0; font-size: 24px; }
-        .user-email { font-size: 14px; color: #666; }
+        .admin-badge { font-size: 14px; color: #666; background: #eee; padding: 5px 10px; border-radius: 5px; }
         .logout-btn { background: #f44336; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; }
         input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; }
-        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 20px; }
-        #status { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; text-align: center; }
+        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 20px; transition: 0.3s; }
+        .submit-btn:hover { background: #e64a19; }
+        #status { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; text-align: center; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -23,8 +24,8 @@
     <div class="header">
         <h1>Create New Post</h1>
         <div>
-            <span id="userEmail" class="user-email"></span>
-            <button id="logoutBtn" class="logout-btn">Logout</button>
+            <span class="admin-badge">Admin Session Active</span>
+            <button id="logoutBtn" class="logout-btn">Exit Admin</button>
         </div>
     </div>
 
@@ -43,8 +44,12 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Access Control: Redirect if PIN was not verified
+    if (localStorage.getItem('adminAuthorized') !== 'true') {
+        window.location.href = "login.html";
+    }
 
     const firebaseConfig = {
         apiKey: "AIzaSyCBSTMljE8h9saIldRcuKbaKp84t5hx9s",
@@ -56,24 +61,12 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getFirestore(app);
-
-    // Authentication Guard
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById('userEmail').innerText = user.email;
-        } else {
-            alert("Access Denied. Please login first.");
-            window.location.href = "login.html";
-        }
-    });
 
     // Logout Functionality
     document.getElementById('logoutBtn').addEventListener('click', () => {
-        signOut(auth).then(() => {
-            window.location.href = "login.html";
-        });
+        localStorage.removeItem('adminAuthorized');
+        window.location.href = "login.html";
     });
 
     // Submit Blog Functionality
@@ -99,7 +92,7 @@
                 image: image,
                 category: category,
                 content: content,
-                author: auth.currentUser.email,
+                author: "Admin",
                 createdAt: serverTimestamp()
             });
 
@@ -108,7 +101,6 @@
             statusDiv.style.color = "#2e7d32";
             statusDiv.innerText = "Blog published successfully!";
             
-            // Clear fields
             document.getElementById('blogTitle').value = "";
             document.getElementById('blogImage').value = "";
             document.getElementById('blogContent').value = "";
