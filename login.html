@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Global Travel Guide</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary-color: #ff5722; --dark-color: #1a1a1a; }
         body { font-family: 'Poppins', sans-serif; background: #f5f7fa; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .login-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+        .login-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; border-top: 5px solid var(--primary-color); }
         .logo { font-size: 24px; font-weight: 700; color: var(--dark-color); text-decoration: none; margin-bottom: 30px; display: block; }
         .logo span { color: var(--primary-color); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
-        .login-btn { background: var(--primary-color); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 10px; }
-        .login-btn:hover { background: #e64a19; }
-        .error-msg { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 5px; font-size: 13px; margin-top: 15px; display: none; }
+        h2 { margin-bottom: 25px; color: #333; font-weight: 600; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; background: #f9f9f9; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary-color); background: white; }
+        .login-btn { background: var(--primary-color); color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; margin-top: 15px; }
+        .login-btn:hover { background: #e64a19; transform: translateY(-2px); }
+        .error-msg { color: #d32f2f; background: #ffebee; padding: 12px; border-radius: 8px; font-size: 13px; margin-top: 20px; display: none; border: 1px solid #ffcdd2; }
     </style>
 </head>
 <body>
 
 <div class="login-card">
     <a href="/latest-article/" class="logo">Global<span>Travel</span>Guide</a>
-    <h2 style="margin-bottom: 20px; color: #333;">Admin Access</h2>
+    <h2>Admin Access</h2>
     
     <input type="email" id="email" placeholder="Admin Email" required>
     <input type="password" id="password" placeholder="Password" required>
@@ -30,16 +33,16 @@
     
     <button id="loginBtn" class="login-btn">Secure Login</button>
     
-    <p style="margin-top: 20px; font-size: 12px; color: #888;">Only authorized admins can post blogs.</p>
+    <p style="margin-top: 25px; font-size: 12px; color: #888;">Only authorized admins can post blogs.</p>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // AAPKI ACTUAL CONFIG (Verified API Key)
+    // AAPKI SAHI CONFIG (Sahi API Key ke saath)
     const firebaseConfig = {
-        apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s",
+        apiKey: "AIzaSyCBSTMLjE8h9saIldRcuKbaKp84t5hx9s", 
         authDomain: "latest-article.firebaseapp.com",
         projectId: "latest-article",
         storageBucket: "latest-article.firebasestorage.app",
@@ -50,32 +53,41 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    document.getElementById('loginBtn').addEventListener('click', async () => {
+    const loginBtn = document.getElementById('loginBtn');
+    const errorDiv = document.getElementById('error');
+
+    loginBtn.addEventListener('click', async () => {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const errorDiv = document.getElementById('error');
-        const btn = document.getElementById('loginBtn');
 
         if(!email || !password) {
-            errorDiv.innerText = "Please fill all fields.";
+            errorDiv.innerText = "Please enter both email and password.";
             errorDiv.style.display = "block";
             return;
         }
 
-        btn.innerText = "Checking Credentials...";
-        btn.disabled = true;
+        loginBtn.innerText = "Verifying...";
+        loginBtn.disabled = true;
         errorDiv.style.display = "none";
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            // Success: Seedha submit page par bhej do
+            // Agar login successful hai toh submit page par bhej do
             window.location.href = "submit.html";
         } catch (error) {
-            btn.innerText = "Secure Login";
-            btn.disabled = false;
-            errorDiv.innerText = "Login Failed: " + error.message;
+            loginBtn.innerText = "Secure Login";
+            loginBtn.disabled = false;
             errorDiv.style.display = "block";
-            console.error(error);
+            
+            // Sahi error message dikhane ke liye
+            if (error.code === 'auth/invalid-login-credentials' || error.code === 'auth/invalid-credential') {
+                errorDiv.innerText = "Invalid email or password. Please try again.";
+            } else if (error.code === 'auth/network-request-failed') {
+                errorDiv.innerText = "Network error. Please check your internet connection.";
+            } else {
+                errorDiv.innerText = "Error: " + error.message;
+            }
+            console.error("Login Error:", error.code);
         }
     });
 </script>
