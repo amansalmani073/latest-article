@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Create Post | Global Travel Guide</title>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 <style>
 :root { --primary-color:#ff5722; }
 body { font-family:'Poppins',sans-serif;background:#f4f7f6;margin:0;padding:20px; }
@@ -12,7 +13,6 @@ body { font-family:'Poppins',sans-serif;background:#f4f7f6;margin:0;padding:20px
 input,select { width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px; }
 #editor { height:350px;margin-bottom:20px; }
 .submit-btn { background:var(--primary-color);color:white;border:none;padding:15px;width:100%;border-radius:8px;cursor:pointer;font-weight:bold; }
-.logout-btn { background:#f44336;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer; }
 </style>
 </head>
 
@@ -69,19 +69,33 @@ return;
 btn.disabled=true;
 btn.innerText="Publishing...";
 
+
+// 🔥 SEO SLUG GENERATOR (STOP WORD REMOVE)
+let slug = title
+.toLowerCase()
+.replace(/should|while|for|the|and|of|to|is|are|applying/g,"")
+.replace(/[^a-z0-9\s]/g,'')
+.split(" ")
+.filter(word => word.length > 2)
+.join("-");
+
 try{
 await addDoc(collection(db,"user_blogs"),{
 title:title,
+slug:slug,
 image:image,
 category:category,
 content:content,
 author:"Admin",
-createdAt:serverTimestamp()   // 🔥 IMPORTANT FIX
+createdAt:serverTimestamp()
 });
-alert("Post added to "+category);
+
+alert("Post added with slug: "+slug);
+
 document.getElementById('blogTitle').value="";
 document.getElementById('blogImage').value="";
 quill.setContents([]);
+
 }
 catch(e){alert(e.message);}
 finally{
