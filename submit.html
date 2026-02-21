@@ -52,7 +52,19 @@ appId:"1:222132959003:web:a329d719efb6cf7c105be"
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
-const quill=new Quill('#editor',{theme:'snow'});
+const quill = new Quill('#editor', {
+theme:'snow',
+modules:{
+toolbar:[
+[{ 'header':[1,2,false]}],
+['bold','italic','underline'],
+[{ 'align':[] }],   // 🔥 THIS ADDS LEFT CENTER RIGHT JUSTIFY
+['link','image'],
+[{ 'list':'ordered'},{ 'list':'bullet'}],
+['clean']
+]
+}
+});
 
 window.publishPost=async()=>{
 const title=document.getElementById('blogTitle').value;
