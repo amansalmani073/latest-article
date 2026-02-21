@@ -10,7 +10,7 @@
 :root { --primary-color:#ff5722; }
 body { font-family:'Poppins',sans-serif;background:#f4f7f6;margin:0;padding:20px; }
 .container { max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:12px; }
-input,select { width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px; }
+input,select,textarea { width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px; }
 #editor { height:350px;margin-bottom:20px; }
 .submit-btn { background:var(--primary-color);color:white;border:none;padding:15px;width:100%;border-radius:8px;cursor:pointer;font-weight:bold; }
 </style>
@@ -22,8 +22,8 @@ input,select { width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;borde
 <h2>Create New Post</h2>
 
 <input type="text" id="blogTitle" placeholder="Blog Title" required>
-<textarea id="metaDesc" placeholder="Enter SEO Meta Description (150 characters)" 
-style="width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px;"></textarea>
+
+<textarea id="metaDesc" placeholder="Enter SEO Meta Description (150 characters)"></textarea>
 
 <label>Select Category:</label>
 <select id="category">
@@ -59,7 +59,7 @@ modules:{
 toolbar:[
 [{ 'header':[1,2,false]}],
 ['bold','italic','underline'],
-[{ 'align':[] }],   // 🔥 THIS ADDS LEFT CENTER RIGHT JUSTIFY
+[{ 'align':[] }],
 ['link','image'],
 [{ 'list':'ordered'},{ 'list':'bullet'}],
 ['clean']
@@ -82,8 +82,7 @@ return;
 btn.disabled=true;
 btn.innerText="Publishing...";
 
-
-// 🔥 SEO SLUG GENERATOR (STOP WORD REMOVE)
+// 🔥 SEO SLUG GENERATOR
 let slug = title
 .toLowerCase()
 .replace(/should|while|for|the|and|of|to|is|are|applying/g,"")
@@ -105,8 +104,9 @@ createdAt:serverTimestamp()
 
 alert("Post added with slug: "+slug);
 
+// RESET FORM ✅
 document.getElementById('blogTitle').value="";
-document.getElementById('blogImage').value="";
+document.getElementById('metaDesc').value="";
 quill.setContents([]);
 
 }
