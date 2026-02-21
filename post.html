@@ -83,7 +83,7 @@ if(!querySnapshot.empty){
 querySnapshot.forEach((doc)=>{
 const data=doc.data();
 
-let textContent=data.content.replace(/<[^>]*>?/gm,'').substring(0,150);
+let textContent=data.metaDesc || data.content.replace(/<[^>]*>?/gm,'').substring(0,160);
 
 document.title=data.title+" | Global Travel Guide";
 document.querySelector("meta[name='description']").setAttribute("content",textContent);
