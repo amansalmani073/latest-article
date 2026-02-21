@@ -4,23 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tourist Visa Guides & Budget Travel Tips for Indian Travelers</title>
-
-<meta name="description" content="Explore latest tourist visa guides, documentation checklist and travel cost tips for Indian travelers planning international trips.">
-
-<link rel="canonical" href="https://amansalmani073.github.io/latest-article/">
-
-<meta property="og:title" content="Visa Guides & Travel Tips for Indian Travelers">
-<meta property="og:description" content="Check tourist visa documents and travel planning tips worldwide.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://amansalmani073.github.io/latest-article/">
+<title>Global Travel Guide | Visa & Destination Expert</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {--primary-color:#ff5722;--dark-color:#1a1a1a;--light-bg:#f5f7fa;}
-body{background:var(--light-bg);font-family:'Poppins',sans-serif;margin:0;}
+:root {
+--primary-color:#ff5722;
+--dark-color:#1a1a1a;
+--light-bg:#f5f7fa;
+--text-gray:#555;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:var(--light-bg);
+color:#333;
+}
 
 .navbar{
 display:flex;
@@ -28,6 +35,10 @@ justify-content:space-between;
 align-items:center;
 padding:15px 8%;
 background:white;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 2px 15px rgba(0,0,0,0.1);
 }
 
 .logo{
@@ -43,7 +54,24 @@ text-decoration:none;
 margin-left:25px;
 text-decoration:none;
 color:var(--dark-color);
+font-weight:500;
 }
+
+.hero{
+position:relative;
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.4)),
+url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+height:65vh;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{font-size:45px;}
 
 .container{
 max-width:1200px;
@@ -57,7 +85,6 @@ grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:25px;
 }
 
-/* 🔥 FIXED CARD DESIGN */
 .card{
 background:white;
 border-radius:12px;
@@ -65,6 +92,11 @@ overflow:hidden;
 box-shadow:0 5px 20px rgba(0,0,0,0.05);
 display:flex;
 flex-direction:column;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
 }
 
 .card img{
@@ -78,15 +110,25 @@ padding:25px;
 flex-grow:1;
 }
 
+.tag{
+background:rgba(255,87,34,0.1);
+color:var(--primary-color);
+padding:4px 12px;
+border-radius:20px;
+font-size:11px;
+font-weight:700;
+text-transform:uppercase;
+}
+
 .btn{
-display:block;
-text-decoration:none;
+display:inline-block;
 background:var(--primary-color);
 color:white;
 padding:10px;
 border-radius:6px;
+text-decoration:none;
 text-align:center;
-margin-top:10px;
+margin-top:15px;
 }
 
 footer{
@@ -102,18 +144,19 @@ padding:40px;
 
 <nav class="navbar">
 <a href="/latest-article/" class="logo">Global<span>Travel</span>Guide</a>
-
 <div class="menu">
 <a href="/latest-article/">Home</a>
 <a href="/latest-article/visa-guides/">Visa Guides</a>
 <a href="/latest-article/travel-tips/">Travel Tips</a>
 <a href="/latest-article/destination-guides/">Destination Guides</a>
-<a href="/latest-article/submit.html"
-style="background:#ff5722;color:white;padding:5px 15px;border-radius:20px;">
-Write a Blog
-</a>
+<a href="/latest-article/submit.html" style="background:#ff5722;color:white;padding:5px 15px;border-radius:20px;">Write a Blog</a>
 </div>
 </nav>
+
+<div class="hero">
+<h1>Explore Travel Visa Information & Destination Guides</h1>
+<p>Trip Planning Tips, Visa Requirements & Travel Costs</p>
+</div>
 
 <div class="container">
 <h2>Latest Articles</h2>
@@ -141,40 +184,26 @@ const db=getFirestore(app);
 const q=query(collection(db,"user_blogs"),orderBy("createdAt","desc"));
 
 onSnapshot(q,(snapshot)=>{
-
 const grid=document.getElementById("user-blogs-grid");
 grid.innerHTML="";
 
 snapshot.forEach((doc)=>{
-
 const data=doc.data();
 
 const tempDiv=document.createElement("div");
 tempDiv.innerHTML=data.content;
 const plainText=tempDiv.textContent||"";
-
 const previewText=plainText.substring(0,100)+"...";
 
-/* 🔥 AUTO PICK FIRST IMAGE FROM EDITOR */
-let firstImage="";
-const imgMatch=data.content.match(/<img.*?src="(.*?)"/);
-
-if(imgMatch && imgMatch[1]){
-firstImage=imgMatch[1];
-}
-
-/* 🔥 FIXED CARD HTML */
 const postHTML=`
 
 <div class="card">
 
-${firstImage ? `<img src="${firstImage}">` : ''}
+${data.image ? `<img src="${data.image}">` : ''}
 
 <div class="card-content">
 
-<span style="font-size:12px;color:#ff5722;">
-${data.category||'User Post'}
-</span>
+<span class="tag">${data.category||'User Post'}</span>
 
 <h3>${data.title}</h3>
 
@@ -193,7 +222,6 @@ Read Full Story
 `;
 
 grid.insertAdjacentHTML("beforeend",postHTML);
-
 });
 });
 </script>
