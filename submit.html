@@ -1,135 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Post | Global Travel Guide</title>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <style>
-        :root { --primary-color: #ff5722; }
-        body { font-family: 'Poppins', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f4f4f4; padding-bottom: 15px; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
-        #editor { height: 350px; margin-bottom: 20px; border-radius: 0 0 8px 8px; }
-        .ql-toolbar { border-radius: 8px 8px 0 0; }
-        .submit-btn { background: var(--primary-color); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
-        .submit-btn:hover { background: #e64a19; }
-        .logout-btn { background: #f44336; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        #status { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; text-align: center; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Post | Global Travel Guide</title>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+:root { --primary-color:#ff5722; }
+body { font-family:'Poppins',sans-serif;background:#f4f7f6;margin:0;padding:20px; }
+.container { max-width:900px;margin:0 auto;background:white;padding:30px;border-radius:12px; }
+input,select { width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:8px; }
+#editor { height:350px;margin-bottom:20px; }
+.submit-btn { background:var(--primary-color);color:white;border:none;padding:15px;width:100%;border-radius:8px;cursor:pointer;font-weight:bold; }
+.logout-btn { background:#f44336;color:white;border:none;padding:8px 15px;border-radius:5px;cursor:pointer; }
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <div class="header">
-        <h2>Create New Post</h2>
-        <button onclick="logout()" class="logout-btn">Logout</button>
-    </div>
+<h2>Create New Post</h2>
 
-    <input type="text" id="blogTitle" placeholder="Blog Title (e.g. 10 Best Places in India)" required>
-    <input type="text" id="blogImage" placeholder="Feature Image URL (e.g. https://site.com/photo.jpg)">
-    
-    <label style="font-size: 13px; color: #666;">Select Category:</label>
-    <select id="blogCategory">
-        <option value="Visa Guide">Visa Guide</option>
-        <option value="Travel Tips">Travel Tips</option>
-        <option value="Destination Guide">Destination Guide</option>
-    </select>
+<input type="text" id="blogTitle" placeholder="Blog Title" required>
+<input type="text" id="blogImage" placeholder="Feature Image URL">
 
-    <div id="editor"></div>
+<label>Select Category:</label>
+<select id="category">
+<option value="visa-guides">Visa Guide</option>
+<option value="travel-tips">Travel Tips</option>
+<option value="destination-guides">Destination Guides</option>
+</select>
 
-    <div id="status"></div>
-    <button id="submitBtn" class="submit-btn" onclick="publishPost()">Publish Blog Post</button>
+<div id="editor"></div>
+
+<button id="submitBtn" class="submit-btn" onclick="publishPost()">Publish Blog Post</button>
 </div>
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // PIN Security Check
-    if (localStorage.getItem('adminAuthorized') !== 'true') {
-        window.location.href = "login.html";
-    }
+const firebaseConfig = {
+apiKey:"AIzaSyCBSTMljE8h9sa1IldRcuKbaKp84t5hx9s",
+authDomain:"latest-article.firebaseapp.com",
+projectId:"latest-article",
+appId:"1:222132959003:web:a329d719efb6cf7c105be"
+};
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCBSTMljE8h9saIldRcuKbaKp84t5hx9s",
-        authDomain: "latest-article.firebaseapp.com",
-        projectId: "latest-article",
-        storageBucket: "latest-article.firebasestorage.app",
-        messagingSenderId: "222132959003",
-        appId: "1:222132959003:web:a329d719efb6cf7c105be"
-    };
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+const quill=new Quill('#editor',{theme:'snow'});
 
-    // Initialize Rich Editor
-    const quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                ['link', 'image', 'video'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'align': [] }],
-                ['clean']
-            ]
-        }
-    });
+window.publishPost=async()=>{
+const title=document.getElementById('blogTitle').value;
+const image=document.getElementById('blogImage').value;
+const category=document.getElementById('category').value;
+const content=quill.root.innerHTML;
+const btn=document.getElementById('submitBtn');
 
-    window.publishPost = async () => {
-        const title = document.getElementById('blogTitle').value;
-        const image = document.getElementById('blogImage').value;
-        const category = document.getElementById('blogCategory').value;
-        const content = quill.root.innerHTML; // Gets Rich HTML content
-        const btn = document.getElementById('submitBtn');
-        const statusDiv = document.getElementById('status');
+if(!title||quill.getText().trim().length===0){
+alert("Title & Content Required");
+return;
+}
 
-        if(!title || quill.getText().trim().length === 0) {
-            alert("Title and Content are required!");
-            return;
-        }
+btn.disabled=true;
+btn.innerText="Publishing...";
 
-        btn.disabled = true;
-        btn.innerText = "Publishing...";
-
-        try {
-           await addDoc(collection(db, "user_blogs"), {
-    title: title,
-    image: image,
-    category: category,
-    content: content,
-    author: "Admin",
-    timestamp: serverTimestamp()  // Change from createdAt to timestamp
+try{
+await addDoc(collection(db,"user_blogs"),{
+title:title,
+image:image,
+category:category,
+content:content,
+author:"Admin",
+createdAt:serverTimestamp()   // 🔥 IMPORTANT FIX
 });
-
-            statusDiv.style.display = "block";
-            statusDiv.style.backgroundColor = "#e8f5e9";
-            statusDiv.innerText = "Success! Post added to " + category;
-            
-            // Clear inputs
-            document.getElementById('blogTitle').value = "";
-            document.getElementById('blogImage').value = "";
-            quill.setContents([]);
-
-        } catch (error) {
-            statusDiv.style.display = "block";
-            statusDiv.style.backgroundColor = "#ffebee";
-            statusDiv.innerText = "Error: " + error.message;
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "Publish Blog Post";
-        }
-    };
-
-    window.logout = () => {
-        localStorage.removeItem('adminAuthorized');
-        window.location.href = "login.html";
-    };
+alert("Post added to "+category);
+document.getElementById('blogTitle').value="";
+document.getElementById('blogImage').value="";
+quill.setContents([]);
+}
+catch(e){alert(e.message);}
+finally{
+btn.disabled=false;
+btn.innerText="Publish Blog Post";
+}
+};
 </script>
+
 </body>
 </html>
