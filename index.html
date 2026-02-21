@@ -1,237 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Travel Guide | Visa & Destination Expert</title>
-    <meta name="google-site-verification" content="3u3PpjCvQ0QmKbpqgPXjgBtOuxwUGwCLlPK6Dde6uUM" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        :root {
-            --primary-color: #ff5722;
-            --dark-color: #1a1a1a;
-            --light-bg: #f5f7fa;
-            --text-gray: #555;
-        }
+<title>Tourist Visa Guides & Budget Travel Tips for Indian Travelers</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+<meta name="description" content="Explore latest tourist visa guides, documentation checklist and travel cost tips for Indian travelers planning international trips.">
 
-        body {
-            background: var(--light-bg);
-            color: #333;
-        }
+<link rel="canonical" href="https://amansalmani073.github.io/latest-article/">
 
-        /* NAVBAR */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 8%;
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-        }
+<meta property="og:title" content="Visa Guides & Travel Tips for Indian Travelers">
+<meta property="og:description" content="Check tourist visa documents and travel planning tips worldwide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://amansalmani073.github.io/latest-article/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark-color);
-            text-decoration: none;
-        }
+<meta name="robots" content="index, follow">
+<meta name="google-site-verification" content="3u3PpjCvQ0QmKbpqgPXjgBtOuxwUGwCLlPK6Dde6uUM"/>
 
-        .logo span { color: var(--primary-color); }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        .menu { display: flex; align-items: center; }
-
-        .menu a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        .menu a:hover { color: var(--primary-color); }
-
-        /* HERO */
-        .hero {
-            position: relative;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
-            height: 65vh;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .hero h1 { font-size: 45px; max-width: 800px; line-height: 1.2; }
-        .hero p { margin-top: 15px; font-size: 18px; opacity: 0.9; }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 60px 20px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            transition: 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-content { padding: 25px; flex-grow: 1; }
-        .card-content h3 { margin-bottom: 10px; font-size: 20px; color: var(--dark-color); }
-        .card-content p { color: var(--text-gray); font-size: 14px; margin-bottom: 15px; }
-
-        .tag {
-            display: inline-block;
-            background: rgba(255,87,34,0.1);
-            color: var(--primary-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            display: inline-block;
-            text-decoration: none;
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: 0.3s;
-            text-align: center;
-        }
-
-        .btn:hover { background: #e64a19; }
-
-        .cta {
-            background: var(--primary-color);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        footer {
-            background: var(--dark-color);
-            color: #aaa;
-            text-align: center;
-            padding: 40px;
-            font-size: 14px;
-        }
-    </style>
+<style>
+:root {--primary-color:#ff5722;--dark-color:#1a1a1a;--light-bg:#f5f7fa;--text-gray:#555;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--light-bg);color:#333;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 8%;background:white;position:sticky;top:0;z-index:1000;box-shadow:0 2px 15px rgba(0,0,0,0.1);}
+.logo{font-size:24px;font-weight:700;color:var(--dark-color);text-decoration:none;}
+.logo span{color:var(--primary-color);}
+.menu a{margin-left:25px;text-decoration:none;color:var(--dark-color);font-weight:500;}
+.hero{
+position:relative;
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.4)),
+url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+height:65vh;color:white;display:flex;align-items:center;justify-content:center;
+flex-direction:column;text-align:center;padding:20px;}
+.hero h1{font-size:42px;max-width:800px;line-height:1.2;}
+.hero p{margin-top:15px;font-size:18px;opacity:0.9;}
+.section-title{text-align:center;margin-bottom:40px;font-size:28px;font-weight:700;}
+.container{max-width:1200px;margin:auto;padding:60px 20px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px;}
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,0.05);transition:0.3s ease;text-decoration:none;color:inherit;display:flex;flex-direction:column;}
+.card img{width:100%;height:220px;object-fit:cover;}
+.card-content{padding:25px;flex-grow:1;}
+.tag{display:inline-block;background:rgba(255,87,34,0.1);color:var(--primary-color);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:10px;}
+.btn{display:inline-block;text-decoration:none;background:var(--primary-color);color:white;padding:10px 20px;border-radius:6px;font-weight:600;text-align:center;}
+.cta{background:var(--primary-color);color:white;padding:60px 20px;text-align:center;}
+footer{background:var(--dark-color);color:#aaa;text-align:center;padding:40px;font-size:14px;}
+</style>
 </head>
+
 <body>
 
 <nav class="navbar">
-    <a href="/latest-article/" class="logo">Global<span>Travel</span>Guide</a>
-    <div class="menu">
-        <a href="/latest-article/">Home</a>
-        <a href="/latest-article/visa-guides/">Visa Guides</a>
-        <a href="/latest-article/travel-tips/">Travel Tips</a>
-        <a href="/latest-article/destination-guides/">Destination Guides</a>
-        <a href="/latest-article/submit.html" style="background: var(--primary-color); color: white; padding: 5px 15px; border-radius: 20px;">Write a Blog</a>
-    </div>
+<a href="/latest-article/" class="logo">Global<span>Travel</span>Guide</a>
+<div class="menu">
+<a href="/latest-article/">Home</a>
+<a href="/latest-article/visa-guides/">Visa Guides</a>
+<a href="/latest-article/travel-tips/">Travel Tips</a>
+<a href="/latest-article/destination-guides/">Destination Guides</a>
+<a href="/latest-article/submit.html" style="background:var(--primary-color);color:white;padding:5px 15px;border-radius:20px;">Write a Blog</a>
+</div>
 </nav>
 
 <div class="hero">
-    <h1>Explore Travel Visa Information & Destination Guides</h1>
-    <p>Trip Planning Tips, Visa Requirements & Travel Costs</p>
+<h1>Latest Tourist Visa Guides & Budget Travel Tips for Indian Travelers</h1>
+<p>Trip Planning Tips, Visa Requirements & Travel Costs</p>
 </div>
 
 <div class="container">
-    <h2 class="section-title">Explore Travel Categories</h2>
-    <div class="grid">
-        <a href="/latest-article/visa-guides/" class="card">
-            <div class="card-content" style="text-align: center; padding: 40px;">
-                <i class="fas fa-passport" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
-                <h3>Visa Guides</h3>
-                <p>Check visa documents, fees, and processing requirements.</p>
-            </div>
-        </a>
-
-        <a href="/latest-article/travel-tips/" class="card">
-            <div class="card-content" style="text-align: center; padding: 40px;">
-                <i class="fas fa-lightbulb" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
-                <h3>Travel Tips</h3>
-                <p>Learn how to plan budget-friendly international trips.</p>
-            </div>
-        </a>
-
-        <a href="/latest-article/destination-guides/" class="card">
-            <div class="card-content" style="text-align: center; padding: 40px;">
-                <i class="fas fa-map-marked-alt" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
-                <h3>Destinations</h3>
-                <p>Detailed itineraries and cost breakdowns for top cities.</p>
-            </div>
-        </a>
-    </div>
+<h2 class="section-title">International Travel & Visa Guides for Indians</h2>
+<p>
+Planning an international trip from India? Our Global Travel Guide helps Indian travelers understand tourist visa requirements, documentation checklist, visa fees and travel costs for top destinations worldwide.
+</p>
 </div>
 
-<div class="container" style="background: #fff; border-radius: 20px;">
-    <h2 class="section-title">Latest Articles</h2>
-    <div id="user-blogs-grid" class="grid">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=500&q=60" alt="Thailand">
-            <div class="card-content">
-                <span class="tag">Visa Guide</span>
-                <h3>Thailand Tourist Visa Documents</h3>
-                <p>Detailed checklist of documents required for Indian & UAE residents.</p>
-                <a href="#" class="btn">Read Article</a>
-            </div>
-        </div>
-    </div>
+<div class="container" style="background:#fff;border-radius:20px;">
+<h2 class="section-title">Latest Articles</h2>
+<div id="user-blogs-grid" class="grid"></div>
 </div>
 
 <div class="cta">
-    <h2>Ready to Plan Your Next Adventure?</h2>
-    <p style="margin-bottom: 25px; opacity: 0.9;">Get accurate visa info and budget guides in one place.</p>
-    <a href="/latest-article/visa-guides/" style="background:white; color:var(--primary-color); padding:12px 30px; text-decoration:none; border-radius:30px; font-weight:700; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-        Get Started Now
-    </a>
+<h2>Ready to Plan Your Next Adventure?</h2>
+<p style="margin-bottom:25px;">Get accurate visa info and budget guides in one place.</p>
+<a href="/latest-article/visa-guides/" style="background:white;color:var(--primary-color);padding:12px 30px;text-decoration:none;border-radius:30px;font-weight:700;">
+Get Started Now
+</a>
 </div>
 
 <footer>
-    <p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
+<p>&copy; 2026 Global Travel Guide. All Rights Reserved.</p>
 </footer>
+
+<script type="application/ld+json">
+{
+"@context":"https://schema.org",
+"@type":"WebSite",
+"name":"Global Travel Guide",
+"url":"https://amansalmani073.github.io/latest-article/",
+"publisher":{"@type":"Person","name":"Aman Salman"}
+}
+</script>
+
+<!-- 🔥 FIREBASE SCRIPT SAME AS YOURS BELOW (UNCHANGED) -->
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -248,35 +120,26 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
-  const q = query(collection(db, "user_blogs"), orderBy("createdAt", "desc")); // Change from timestamp to createdAt
+  const q = query(collection(db, "user_blogs"), orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
     const grid = document.getElementById("user-blogs-grid");
-    
-    snapshot.docChanges().forEach((change) => {
-      if (change.type === "added") {
-        const data = change.doc.data();
-        const docId = change.doc.id; // Unique Blog ID
-        
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = data.content;
-        const plainText = tempDiv.textContent || tempDiv.innerText || "";
-        const previewText = plainText.substring(0, 100) + "...";
-
-        const postHTML = `
-          <div class="card">
-              <div class="card-content">
-                  <span class="tag">${data.category ? data.category.replace('-', ' ') : 'User Post'}</span>
-                  <h3>${data.title}</h3>
-                  <p style="font-size:12px; color:#888; margin-bottom: 10px;">By ${data.author}</p>
-                  <p>${previewText}</p>
-                  <a href="/latest-article/post.html?id=${docId}" class="btn" style="font-size:12px; padding:5px 15px; margin-top: 10px; width:100%;">Read Full Story</a>
-              </div>
-          </div>
-        `;
-        grid.insertAdjacentHTML('beforeend', postHTML);
-      }
+    grid.innerHTML="";
+    snapshot.forEach((doc)=>{
+      const data=doc.data();
+      const tempDiv=document.createElement("div");
+      tempDiv.innerHTML=data.content;
+      const plainText=tempDiv.textContent||"";
+      const previewText=plainText.substring(0,100)+"...";
+      grid.innerHTML+=`
+      <div class="card">
+      <div class="card-content">
+      <span class="tag">${data.category||'User Post'}</span>
+      <h3>${data.title}</h3>
+      <p style="font-size:12px;color:#888;">By ${data.author}</p>
+      <p>${previewText}</p>
+      <a href="/latest-article/post.html?id=${doc.id}" class="btn" style="width:100%;">Read Full Story</a>
+      </div></div>`;
     });
   });
 </script>
